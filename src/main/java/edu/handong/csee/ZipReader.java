@@ -1,11 +1,13 @@
 package edu.handong.csee;
 
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.Enumeration;
 
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipFile;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class ZipReader {
 
@@ -24,9 +26,17 @@ public class ZipReader {
 	public void readFileInZip(String path) {
 		ZipFile zipFile;
 		try {
+			Workbook xlsxWb = new XSSFWorkbook();
 			zipFile = new ZipFile(path);
 			Enumeration<? extends ZipArchiveEntry> entries = zipFile.getEntries();
 
+			//create excel sheet
+			Sheet sheet1 = xlsxWb.createSheet("result");
+			
+			//make size of excel sheet
+			sheet1.setColumnWidth(0,10000);
+			sheet1.setColumnWidth(9,10000);
+			
 		    while(entries.hasMoreElements()){
 		    	ZipArchiveEntry entry = entries.nextElement();
 		        InputStream stream = zipFile.getInputStream(entry);
@@ -43,3 +53,5 @@ public class ZipReader {
 		}
 	}
 }
+
+
